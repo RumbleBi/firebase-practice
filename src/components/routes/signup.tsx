@@ -1,48 +1,9 @@
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
-import { styled } from "styled-components";
 import { auth } from "../../firebase";
-import { useNavigate } from "react-router-dom";
-
-const Wrap = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 420px;
-  padding: 50px 0px;
-`;
-
-const Title = styled.h1`
-  font-size: 42px;
-`;
-
-const Form = styled.form`
-  margin-top: 50px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-`;
-
-const Input = styled.input`
-  padding: 10px 20px;
-  border-radius: 50px;
-  border: none;
-  width: 100%;
-  font-size: 16px;
-  &[type="submit"] {
-    cursor: pointer;
-    &:hover {
-      opacity: 0.8;
-    }
-  }
-`;
-
-const Error = styled.div`
-  font-weight: 600;
-  color: tomato;
-`;
+import { Link, useNavigate } from "react-router-dom";
+import { FirebaseError } from "firebase/app";
+import { Error, Form, Input, Switcher, Title, Wrap } from "../../styles/auth.styled";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -68,6 +29,7 @@ export default function Signup() {
   };
   const submitSingup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
     if (isLoading || name === "" || email === "" || password === "") return;
 
     try {
@@ -82,6 +44,9 @@ export default function Signup() {
 
       navigate("/");
     } catch (e) {
+      if (e instanceof FirebaseError) {
+        setError(e.message);
+      }
       console.log(e);
     } finally {
       setIsLoading(false);
@@ -119,6 +84,9 @@ export default function Signup() {
         <Input type='submit' value={isLoading ? "Loading" : "Signup"} />
       </Form>
       {error !== "" ? <Error>{error}</Error> : null}
+      <Switcher>
+        이미 계정이 있으신가요? <Link to='/login'>로그인 &rarr;</Link>
+      </Switcher>
     </Wrap>
   );
 }
