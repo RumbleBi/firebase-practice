@@ -38,7 +38,7 @@ const Input = styled.input`
 
 const Error = styled.div`
   font-weight: 600;
-  color: tomato;
+  color: red;
 `;
 
 const Switcher = styled.span`

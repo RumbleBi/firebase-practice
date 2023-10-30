@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { Tweet } from "./timeline";
+import { TweetProps } from "./timeline";
 import { auth, db, storage } from "../firebase";
 import { deleteDoc, doc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
@@ -42,7 +42,7 @@ const DeleteBtn = styled.button`
   cursor: pointer;
 `;
 
-export default function Tweet({ username, photo, tweet, userId, id }: Tweet) {
+export default function Tweet({ username, photo, tweet, userId, id }: TweetProps) {
   const user = auth.currentUser;
 
   const [isLoading, setIsLoading] = useState(false);
